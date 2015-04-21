@@ -1,7 +1,7 @@
 <resources>
 
-
-
+    <string name="action_share">Share</string>
+    <string name="action_map">Map Location</string>
         <!--
              Used in Action Bar, and in AndroidManifest to tell the device the name of this app.
              It's to keep this short, so your launcher icon isn't displayed with "The greatest Wea"
