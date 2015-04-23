@@ -26,6 +26,7 @@ public class TestDb extends AndroidTestCase {
     // Since we want each test to start with a clean slate
     void deleteTheDatabase() {
         mContext.deleteDatabase(com.example.shasta.sunshine.data.WeatherDbHelper.DATABASE_NAME);
+
     }
 
     /*
