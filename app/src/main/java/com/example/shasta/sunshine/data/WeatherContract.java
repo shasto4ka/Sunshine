@@ -31,19 +31,11 @@ public class WeatherContract {
     public static final String PATH_LOCATION = "location";
 
      public static long normalizeDate(long startDate) {
-        // normalize the start date to the beginning of the (UTC) day
         Time time = new Time();
         time.set(startDate);
         int julianDay = Time.getJulianDay(startDate, time.gmtoff);
         return time.setJulianDay(julianDay);
     }
-
-    /*
-        Inner class that defines the table contents of the location table
-        Students: This is where you will add the strings.  (Similar to what has been
-        done for WeatherEntry)
-     */
-
 
 public static final class LocationEntry implements BaseColumns {
      public static final Uri CONTENT_URI =

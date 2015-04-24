@@ -18,10 +18,6 @@ package com.example.shasta.sunshine.data;
 import android.net.Uri;
 import android.test.AndroidTestCase;
 
-/*
-    Students: This is NOT a complete test for the WeatherContract --- just for the functions
-    that we expect you to write.
- */
 public class TestWeatherContract extends AndroidTestCase {
 
     // intentionally includes a slash to make sure Uri is getting quoted correctly

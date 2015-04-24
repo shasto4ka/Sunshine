@@ -33,20 +33,14 @@ public class DetailActivity extends ActionBarActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        //fuckfuck
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_detail, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             startActivity(new Intent(this, SettingsActivity.class));
             return true;
@@ -55,10 +49,7 @@ public class DetailActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class DetailFragment extends Fragment {
+   public static class DetailFragment extends Fragment {
 
         private static final String LOG_TAG = DetailFragment.class.getSimpleName();
 
@@ -74,7 +65,6 @@ public class DetailActivity extends ActionBarActivity {
                                  Bundle savedInstanceState) {
 
             View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
-
             // The detail Activity called via intent.  Inspect the intent for forecast data.
             Intent intent = getActivity().getIntent();
             if (intent != null && intent.hasExtra(Intent.EXTRA_TEXT)) {
@@ -82,7 +72,6 @@ public class DetailActivity extends ActionBarActivity {
                 ((TextView) rootView.findViewById(R.id.detail_text))
                         .setText(mForecastStr);
             }
-
             return rootView;
         }
 
