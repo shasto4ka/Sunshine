@@ -54,14 +54,17 @@ public static final class LocationEntry implements BaseColumns {
         public static final String CONTENT_ITEM_TYPE =
                 ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_LOCATION;
                 
-        public static Uri buildLocationUri(long id) {
-            return ContentUris.withAppendedId(CONTENT_URI, id);
-        }
+
         public static final String TABLE_NAME = "location";
         public static final String COLUMN_LOCATION_SETTING = "location_SETTINGS";
         public static final String COLUMN_CITY_NAME = "city_name";
         public static final String COLUMN_COORD_LAT = "coord_lat";
         public static final String COLUMN_COORD_LONG = "coord_long";
+
+    public static Uri buildLocationUri(long id) {
+        return ContentUris.withAppendedId(CONTENT_URI, id);
+    }
+
     }
 public static final class WeatherEntry implements BaseColumns {
     public static final Uri CONTENT_URI =
@@ -72,15 +75,24 @@ public static final class WeatherEntry implements BaseColumns {
         public static final String CONTENT_ITEM_TYPE =
                 ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_WEATHER;
 
+    public static final String TABLE_NAME = "weather";
+    public static final String COLUMN_LOC_KEY = "location_id";
+    public static final String COLUMN_DATE = "date";
+    public static final String COLUMN_WEATHER_ID = "weather_id";
+    public static final String COLUMN_SHORT_DESC = "short_desc";
+    public static final String COLUMN_MIN_TEMP = "min";
+    public static final String COLUMN_MAX_TEMP = "max";
+    public static final String COLUMN_HUMIDITY = "humidity";
+    public static final String COLUMN_PRESSURE = "pressure";
+    public static final String COLUMN_WIND_SPEED = "wind";
+    public static final String COLUMN_DEGREES = "degrees";
+
         public static Uri buildWeatherUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
- 
-        /*
-            Student: Fill in this buildWeatherLocation function
-         */
+
         public static Uri buildWeatherLocation(String locationSetting) {
-            return null;
+            return CONTENT_URI.buildUpon().appendPath(locationSetting).build();
         }
  
         public static Uri buildWeatherLocationWithStartDate(
@@ -110,16 +122,5 @@ public static final class WeatherEntry implements BaseColumns {
             else
                 return 0;
         }
-        public static final String TABLE_NAME = "weather";
-        public static final String COLUMN_LOC_KEY = "location_id";
-        public static final String COLUMN_DATE = "date";
-        public static final String COLUMN_WEATHER_ID = "weather_id";
-        public static final String COLUMN_SHORT_DESC = "short_desc";
-        public static final String COLUMN_MIN_TEMP = "min";
-        public static final String COLUMN_MAX_TEMP = "max";
-        public static final String COLUMN_HUMIDITY = "humidity";
-        public static final String COLUMN_PRESSURE = "pressure";
-        public static final String COLUMN_WIND_SPEED = "wind";
-        public static final String COLUMN_DEGREES = "degrees";
     }
 }
