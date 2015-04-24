@@ -15,6 +15,7 @@
  */
 package com.example.shasta.sunshine.data;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.test.AndroidTestCase;
@@ -110,24 +111,45 @@ public class TestDb extends AndroidTestCase {
         where you can uncomment out the "createNorthPoleLocationValues" function.  You can
         also make use of the ValidateCurrentRecord function from within TestUtilities.
     */
-    public void testLocationTable() {
-        // First step: Get reference to writable database
 
+
+
+    public long testLocationTable() {
+        // First step: Get reference to writable database
+        SQLiteDatabase db1 = new WeatherDbHelper(
+                this.mContext).getWritableDatabase();
         // Create ContentValues of what you want to insert
         // (you can use the createNorthPoleLocationValues if you wish)
-
+        ContentValues cv = TestUtilities.createNorthPoleLocationValues();
         // Insert ContentValues into database and get a row ID back
+        long ins =  db1.insert(WeatherContract.LocationEntry.TABLE_NAME, null, cv);
 
+        assertTrue("Error: Failure to insert North Pole Location Values", ins != -1);
         // Query the database and receive a Cursor back
+        Cursor cu = db1.query(
+                WeatherContract.LocationEntry.TABLE_NAME,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+                );
 
         // Move the cursor to a valid database row
+
+        assertTrue("Error: This means that we were unable to query the database for table information.",
+                cu.moveToFirst());
 
         // Validate data in resulting Cursor with the original ContentValues
         // (you can use the validateCurrentRecord function in TestUtilities to validate the
         // query if you like)
-
+        TestUtilities.validateCurrentRecord("lol", cu, cv);
+        assertFalse("lol2", cu.moveToFirst());
         // Finally, close the cursor and database
-
+        cu.close();
+        db1.close();
+        return ins;
     }
 
     /*
@@ -136,31 +158,51 @@ public class TestDb extends AndroidTestCase {
         where you can use the "createWeatherValues" function.  You can
         also make use of the validateCurrentRecord function from within TestUtilities.
      */
-    public void testWeatherTable() {
+    public long testWeatherTable() {
         // First insert the location, and then use the locationRowId to insert
         // the weather. Make sure to cover as many failure cases as you can.
-
         // Instead of rewriting all of the code we've already written in testLocationTable
         // we can move this code to insertLocation and then call insertLocation from both
         // tests. Why move it? We need the code to return the ID of the inserted location
         // and our testLocationTable can only return void because it's a test.
+        long lri = insertLocation() ;
+        assertFalse("lol2", lri==-1L);
 
         // First step: Get reference to writable database
 
+        SQLiteDatabase db1 = new WeatherDbHelper(
+                this.mContext).getWritableDatabase();
+
         // Create ContentValues of what you want to insert
         // (you can use the createWeatherValues TestUtilities function if you wish)
-
+        ContentValues cv = TestUtilities.createWeatherValues(lri);
         // Insert ContentValues into database and get a row ID back
+        long ins =  db1.insert(WeatherContract.LocationEntry.TABLE_NAME, null, cv);
+        assertTrue("Error: Failure to insert North Pole Location Values", ins != -1);
 
         // Query the database and receive a Cursor back
+        Cursor cu = db1.query(
+                WeatherContract.WeatherEntry.TABLE_NAME,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+        );
 
         // Move the cursor to a valid database row
-
+        assertTrue("Error: This means that we were unable to query the database for table information.",
+                cu.moveToFirst());
         // Validate data in resulting Cursor with the original ContentValues
         // (you can use the validateCurrentRecord function in TestUtilities to validate the
         // query if you like)
-
+        TestUtilities.validateCurrentRecord("lol", cu, cv);
+        assertFalse("lol2", cu.moveToFirst());
         // Finally, close the cursor and database
+        cu.close();
+        db1.close();
+        return ins;
     }
 
 
