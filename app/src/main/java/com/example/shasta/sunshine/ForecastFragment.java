@@ -51,26 +51,31 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     static final int COL_COORD_LAT = 7;
     static final int COL_COORD_LONG = 8;
 
-    private ForecastAdapter mForecastAdapter ;
-    public ForecastFragment() {    }
+    private ForecastAdapter mForecastAdapter;
+
+    public ForecastFragment() {
+    }
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {   super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true) ;    }
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
 
-   @Override
-   public void onCreateOptionsMenu(Menu menu,MenuInflater inflater )
-   {       inflater.inflate(R.menu.forecastfragment, menu) ;  }
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.forecastfragment, menu);
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_refresh) {
-        updateWeather();
-            return true;        }
+            updateWeather();
+            return true;
+        }
 
-return super.onOptionsItemSelected(item) ;
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -82,14 +87,14 @@ return super.onOptionsItemSelected(item) ;
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
         ListView listView = (ListView) rootView.findViewById(R.id.ListViewForecast);
-        listView.setAdapter(mForecastAdapter) ;
+        listView.setAdapter(mForecastAdapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-               // CursorAdapter returns a cursor at the correct position for getItem(), or null
-               // if it cannot seek to that position.
+                // CursorAdapter returns a cursor at the correct position for getItem(), or null
+                // if it cannot seek to that position.
                 Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
                 if (cursor != null) {
                     String locationSetting = Utility.getPreferredLocation(getActivity());
@@ -100,31 +105,24 @@ return super.onOptionsItemSelected(item) ;
                     startActivity(intent);
                 }
             }
-       });
+        });
 
 
         return rootView;
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState)
-    {
-        getLoaderManager().initLoader(FORECAST_LOADER,null,this );
-        super.onActivityCreated(savedInstanceState );
+    public void onActivityCreated(Bundle savedInstanceState) {
+        getLoaderManager().initLoader(FORECAST_LOADER, null, this);
+        super.onActivityCreated(savedInstanceState);
     }
 
 
-    private void updateWeather (){
+    private void updateWeather() {
         FetchWeatherTask weatherTask = new FetchWeatherTask(getActivity());
-       // SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        // SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         String location = Utility.getPreferredLocation(getActivity());
         weatherTask.execute(location);
-    }
-
-    @Override
-    public void onStart(){
-        super.onStart() ;
-        updateWeather() ;
     }
 
     @Override
@@ -136,17 +134,27 @@ return super.onOptionsItemSelected(item) ;
         Uri weatherForLocationUri = WeatherContract.WeatherEntry.buildWeatherLocationWithStartDate(
                 locationSetting, System.currentTimeMillis());
 
-        return new CursorLoader(getActivity(),weatherForLocationUri,
+        return new CursorLoader(getActivity(), weatherForLocationUri,
                 FORECAST_COLUMNS, null, null, sortOrder);
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-        mForecastAdapter.swapCursor(cursor); }
+        mForecastAdapter.swapCursor(cursor);
+    }
 
     @Override
     public void onLoaderReset(Loader<Cursor> cursorLoader) {
         mForecastAdapter.swapCursor(null);
     }
+
+    void onLocationChanged()
+    {
+        updateWeather();
+        getLoaderManager().restartLoader(FORECAST_LOADER ,null,this );
+
+    }
+
+
 
 }

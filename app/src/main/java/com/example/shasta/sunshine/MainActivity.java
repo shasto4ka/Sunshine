@@ -1,10 +1,8 @@
 package com.example.shasta.sunshine;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -13,14 +11,17 @@ import android.view.MenuItem;
 
 public class MainActivity extends ActionBarActivity {
     private final String LOG_TAG = MainActivity.class.getSimpleName();
+    private final String FORECASTFRAGMENT_TAG = "FFtag";
+    private String mLocation;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.v(LOG_TAG, "in onCreate");
+        mLocation = Utility.getPreferredLocation(this );
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new ForecastFragment())
+                    .add(R.id.container, new ForecastFragment(), FORECASTFRAGMENT_TAG)
                     .commit();
         }
     }
@@ -36,8 +37,17 @@ public class MainActivity extends ActionBarActivity {
     protected void onResume() {
         Log.v(LOG_TAG, "in onResume");
         super.onResume();
-        // The activity has become visible (it is now "resumed").
+        String location = Utility.getPreferredLocation( this );
+                // update the location in our second pane using the fragment manager
+        if (location != null && !location.equals(mLocation)) {
+            ForecastFragment ff = (ForecastFragment)getSupportFragmentManager().findFragmentByTag(FORECASTFRAGMENT_TAG);
+            if ( null != ff ) {
+                ff.onLocationChanged();
+            }
+            mLocation = location;
+        }
     }
+
 
     @Override
     protected void onPause() {
