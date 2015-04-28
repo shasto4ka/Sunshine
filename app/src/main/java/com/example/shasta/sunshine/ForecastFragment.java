@@ -19,6 +19,7 @@ import android.widget.ListView;
 
 import com.example.shasta.sunshine.data.WeatherContract;
 
+
 public class ForecastFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final int FORECAST_LOADER = 0;
     private static final String[] FORECAST_COLUMNS = {
