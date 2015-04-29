@@ -93,6 +93,7 @@ public class ForecastAdapter extends CursorAdapter {
           // Use placeholder image for now
           viewHolder.descriptionView.setText(weatherr);
 
+          viewHolder.iconView.setContentDescription(weatherr);
 
           boolean isMetric = Utility.isMetric(context);
 
